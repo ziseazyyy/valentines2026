@@ -15,10 +15,20 @@
             background-color: #ffe4e1;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            overflow: hidden; /* Prevents scrollbars when button moves */
+            overflow: hidden;
         }
-        h1 { color: #d02090; font-size: 3rem; padding: 0 20px; }
-        .buttons { margin-top: 20px; position: relative; width: 300px; height: 100px; }
+        h1 { color: #d02090; font-size: 2.5rem; margin: 20px; }
+        
+        /* Image Container */
+        .om-nom-container {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        img { max-height: 200px; border-radius: 15px; }
+
+        .buttons { margin-top: 20px; position: relative; width: 100%; height: 100px; }
         button {
             padding: 15px 30px;
             font-size: 1.2rem;
@@ -29,16 +39,14 @@
         }
         #yesBtn { background-color: #ff69b4; color: white; }
         #noBtn { background-color: #ffffff; color: #ff69b4; position: absolute; }
-        .heart { font-size: 100px; }
-        
-        /* The "Please" message styling */
+
         #pleadText {
             display: none;
             position: fixed;
             color: #d02090;
             font-weight: bold;
-            font-size: 1.5rem;
-            pointer-events: none; /* So it doesn't block the cursor */
+            font-size: 1.2rem;
+            pointer-events: none;
             z-index: 100;
         }
     </style>
@@ -46,19 +54,27 @@
 <body>
 
     <div id="pleadText">Pleaseeee 🥺</div>
-    <div class="heart">💖</div>
-    <h1>Althea Mae, Will you be my Valentine?</h1>
+
+    <div class="om-nom-container">
+        <img id="omNomImg" src="omnomhide.png" alt="Om Nom">
+    </div>
+
+    <h1 id="mainHeading">Baby, Will you be my Valentine?</h1>
     
-    <div class="buttons">
+    <div class="buttons" id="buttonArea">
         <button id="yesBtn" onclick="celebrate()">Yes!</button>
         <button id="noBtn" onmouseover="moveButton()">No</button>
     </div>
 
     <script>
-        function moveButton() {
-            const btn = document.getElementById('noBtn');
-            const plead = document.getElementById('pleadText');
+        const omNomImg = document.getElementById('omNomImg');
+        const plead = document.getElementById('pleadText');
+        const btn = document.getElementById('noBtn');
 
+        function moveButton() {
+            // Change image to SAD Om Nom
+            omNomImg.src = "omnomsad.webp";
+            
             // Show the "Please" message
             plead.style.display = 'block';
             
@@ -66,23 +82,31 @@
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             
-            // Move the button
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
             btn.style.position = 'fixed';
 
-            // Position the "Please" text slightly above the button
             plead.style.left = x + 'px';
             plead.style.top = (y - 40) + 'px';
         }
 
         function celebrate() {
-            document.getElementById('pleadText').style.display = 'none';
-            document.body.innerHTML = `
-                <h1 style="color: #d02090;">Yeeess! See you on the 14th, My Loveee! 🌹</h1>
-                <div style="font-size: 100px;">🎉🥰💌</div>
-                <p style="font-size: 1.5rem; color: #d02090;">I knew you'd say yes!</p>
-            `;
+            // Clear the "Please" text and update main UI
+            plead.style.display = 'none';
+            document.getElementById('buttonArea').style.display = 'none';
+            
+            // Change image to CELEBRATING Om Nom
+            omNomImg.src = "celebrating-om-nom.gif";
+            
+            // Update Text
+            document.getElementById('mainHeading').innerHTML = "Yeeess! See you on the 14th, My Lovee! 🌹🥰";
+            
+            // Add a little extra message
+            const extraMsg = document.createElement("p");
+            extraMsg.innerHTML = "I lovee youu! 🥰❤️";
+            extraMsg.style.color = "#d02090";
+            extraMsg.style.fontSize = "1.5rem";
+            document.body.appendChild(extraMsg);
         }
     </script>
 </body>
