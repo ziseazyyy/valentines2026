@@ -81,13 +81,18 @@
         const btn = document.getElementById('noBtn');
         let hoverCount = 0;
 
-        function moveButton() {
+        // Function to handle the movement
+        function moveButton(e) {
+            // Prevent the actual "click" from happening on mobile touch
+            if (e && e.type === 'touchstart') {
+                e.preventDefault();
+            }
+
             hoverCount++;
 
             if (hoverCount > 4) {
-                // Stop moving and become unclickable
-                btn.innerHTML = "click yes muna 😁";
-                btn.style.pointerEvents = "none"; // Makes it unclickable
+                btn.innerHTML = "click yes naa 😁";
+                btn.style.pointerEvents = "none"; 
                 btn.style.opacity = "0.7";
                 plead.style.display = 'none';
                 return;
@@ -96,16 +101,22 @@
             omNomImg.src = "omnomsad.webp";
             plead.style.display = 'block';
             
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            // Adjusting bounds so it doesn't go off-screen on small mobile displays
+            const padding = 20;
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
             
             btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            btn.style.left = Math.max(padding, x) + 'px';
+            btn.style.top = Math.max(padding, y) + 'px';
 
-            plead.style.left = x + 'px';
-            plead.style.top = (y - 40) + 'px';
+            plead.style.left = btn.style.left;
+            plead.style.top = (parseInt(btn.style.top) - 40) + 'px';
         }
+
+        // Add listeners for both Desktop (mouseover) and Mobile (touchstart)
+        btn.addEventListener('mouseover', moveButton);
+        btn.addEventListener('touchstart', moveButton);
 
         function celebrate() {
             plead.style.display = 'none';
@@ -120,7 +131,6 @@
             extraMsg.style.fontSize = "1.5rem";
             document.body.appendChild(extraMsg);
 
-            // Add pic.jpg
             const couplePic = document.createElement("img");
             couplePic.src = "pic.jpg";
             couplePic.style.maxWidth = "80%";
