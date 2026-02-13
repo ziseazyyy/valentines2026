@@ -19,7 +19,6 @@
         }
         h1 { color: #d02090; font-size: 2.5rem; margin: 20px; }
         
-        /* Image Container */
         .om-nom-container {
             height: 250px;
             display: flex;
@@ -28,7 +27,17 @@
         }
         img { max-height: 200px; border-radius: 15px; }
 
-        .buttons { margin-top: 20px; position: relative; width: 100%; height: 100px; }
+        .buttons { 
+            margin-top: 20px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 40px; 
+            width: 100%; 
+            height: 100px; 
+            position: relative; 
+        }
+
         button {
             padding: 15px 30px;
             font-size: 1.2rem;
@@ -38,7 +47,7 @@
             transition: all 0.2s ease;
         }
         #yesBtn { background-color: #ff69b4; color: white; }
-        #noBtn { background-color: #ffffff; color: #ff69b4; position: absolute; }
+        #noBtn { background-color: #ffffff; color: #ff69b4; }
 
         #pleadText {
             display: none;
@@ -70,43 +79,58 @@
         const omNomImg = document.getElementById('omNomImg');
         const plead = document.getElementById('pleadText');
         const btn = document.getElementById('noBtn');
+        let hoverCount = 0;
 
         function moveButton() {
-            // Change image to SAD Om Nom
+            hoverCount++;
+
+            if (hoverCount > 4) {
+                // Stop moving and become unclickable
+                btn.innerHTML = "click yes muna 😁";
+                btn.style.pointerEvents = "none"; // Makes it unclickable
+                btn.style.opacity = "0.7";
+                plead.style.display = 'none';
+                return;
+            }
+
             omNomImg.src = "omnomsad.webp";
-            
-            // Show the "Please" message
             plead.style.display = 'block';
             
-            // Randomize position
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             
+            btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
-            btn.style.position = 'fixed';
 
             plead.style.left = x + 'px';
             plead.style.top = (y - 40) + 'px';
         }
 
         function celebrate() {
-            // Clear the "Please" text and update main UI
             plead.style.display = 'none';
             document.getElementById('buttonArea').style.display = 'none';
-            
-            // Change image to CELEBRATING Om Nom
             omNomImg.src = "celebrating-om-nom.gif";
             
-            // Update Text
             document.getElementById('mainHeading').innerHTML = "Yeeess! See you on the 14th, My Lovee! 🌹🥰";
             
-            // Add a little extra message
             const extraMsg = document.createElement("p");
             extraMsg.innerHTML = "I lovee youu! 🥰❤️";
             extraMsg.style.color = "#d02090";
             extraMsg.style.fontSize = "1.5rem";
             document.body.appendChild(extraMsg);
+
+            // Add pic.jpg
+            const couplePic = document.createElement("img");
+            couplePic.src = "pic.jpg";
+            couplePic.style.maxWidth = "80%";
+            couplePic.style.maxHeight = "300px";
+            couplePic.style.marginTop = "20px";
+            couplePic.style.borderRadius = "20px";
+            couplePic.style.display = "block";
+            couplePic.style.marginLeft = "auto";
+            couplePic.style.marginRight = "auto";
+            document.body.appendChild(couplePic);
         }
     </script>
 </body>
